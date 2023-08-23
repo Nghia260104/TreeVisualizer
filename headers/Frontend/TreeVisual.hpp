@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <AVLVisual.hpp>
+#include <HeapVisual.hpp>
 #include <Button.hpp>
 
 namespace Frontend
@@ -11,6 +12,9 @@ namespace Frontend
         sf::Text Name;
         Button DataType[5];
         AVLVisual Avl_tree;
+        MaxHeapVisual MaxHeap_Tree;
+        MinHeapVisual MinHeap_Tree;
+
         const int Tree = 2, avl = 8, B4 = 9, MaxHeap = 10, MinHeap = 11, Trie = 12;
 
     public:

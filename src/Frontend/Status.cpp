@@ -14,6 +14,44 @@ Status::Status()
     hideNode = hideArc = 0;
 }
 
+void Status::highlightNode()
+{
+    NodeFillColor = Highlight;
+    NodeTextColor = BackgroundColor;
+    OutlineColor = Highlight;
+}
+
+void Status::NodeOnPath()
+{
+    NodeFillColor = BackgroundColor;
+    NodeTextColor = Highlight;
+}
+
+void Status::NormalNode()
+{
+    NodeFillColor = BackgroundColor;
+    NodeTextColor = TextColor;
+    OutlineColor = TextColor;
+}
+
+void Status::highlightArc()
+{
+    ArcColor = Highlight;
+    thickness = 0.15f * g_radius;
+}
+
+void Status::ArcOnPath()
+{
+    // ArcColor = Highlight;
+    thickness = 0.1f * g_radius;
+}
+
+void Status::NormalArc()
+{
+    ArcColor = TextColor;
+    thickness = 0.1f * g_radius;
+}
+
 Handle::Handle()
 {
     step = 0;
@@ -79,7 +117,7 @@ void Handle::clear()
 
 void Handle::stepforw()
 {
-    if (step + 1 == list.size())
+    if (step + 1 >= list.size())
     {
         run1step = 0;
         return;
@@ -145,7 +183,7 @@ void Handle::stepforw()
 
 void Handle::stepback()
 {
-    if (step == 0)
+    if (step <= 0)
     {
         run1step = 0;
         return;

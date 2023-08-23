@@ -14,6 +14,12 @@ struct Status
     sf::String nodeVal;
 
     Status();
+    void highlightNode();
+    void NodeOnPath();
+    void NormalNode();
+    void highlightArc();
+    void ArcOnPath();
+    void NormalArc();
 };
 
 class Handle

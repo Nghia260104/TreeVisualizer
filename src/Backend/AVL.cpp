@@ -449,7 +449,18 @@ Node *AVL::REMOVE(Node *Cur, int val, bool &check)
             delete temp_node;
             temp_node = nullptr;
             int order = 0;
-            if (Num() != 0)
+            if (Num() == 1)
+            {
+                for (int i = 0; i < limInsert(); i++)
+                {
+                    if (Tmp[i].Node == root()->Cur)
+                    {
+                        Tmp[i].NodePosition = sf::Vector2f(window.getSize().x / 2, upper_edge);
+                        break;
+                    }
+                }
+            }
+            else if (Num() > 1)
             {
                 setPosition(root(), 0, order, Tmp);
                 setArcPosition(root(), Tmp);

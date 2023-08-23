@@ -53,6 +53,8 @@ void TreeVisual::create()
 
     // Create DataType
     Avl_tree.create();
+    MinHeap_Tree.create();
+    MaxHeap_Tree.create();
 
     Predraw();
 }
@@ -82,6 +84,16 @@ void TreeVisual::drawTexture(const int &layer)
         Avl_tree.drawTexture();
         Texture.draw(Avl_tree);
     }
+    if (layer == MaxHeap)
+    {
+        MaxHeap_Tree.drawTexture();
+        Texture.draw(MaxHeap_Tree);
+    }
+    if (layer == MinHeap)
+    {
+        MinHeap_Tree.drawTexture();
+        Texture.draw(MinHeap_Tree);
+    }
     Texture.display();
 }
 
@@ -110,7 +122,18 @@ void TreeVisual::processEvent(const sf::Event &event, int &layer)
                     Avl_tree.drawTexture();
                     drawTexture(layer);
                     break;
-                
+                case 1:
+                    layer = MaxHeap;
+                    MaxHeap_Tree.clear();
+                    MaxHeap_Tree.drawTexture();
+                    drawTexture(layer);
+                    break;
+                case 2:
+                    layer = MinHeap;
+                    MinHeap_Tree.clear();
+                    MinHeap_Tree.drawTexture();
+                    drawTexture(layer);
+                    break;
                 default:
                     break;
                 }
@@ -121,6 +144,16 @@ void TreeVisual::processEvent(const sf::Event &event, int &layer)
     {
         Avl_tree.processEvent(event);
         Texture.draw(Avl_tree);
+    }
+    if (layer == MaxHeap)
+    {
+        MaxHeap_Tree.processEvent(event);
+        Texture.draw(MaxHeap_Tree);
+    }
+    if (layer == MinHeap)
+    {
+        MinHeap_Tree.processEvent(event);
+        Texture.draw(MinHeap_Tree);
     }
     Texture.display();
 }
