@@ -13,6 +13,7 @@ namespace Backend
         void clear();
 
         int Hash(const int &val) const;
+        void resize(int n);
         HashNode *&operator[](int index);
         const HashNode *const &operator[](int index) const;
         const HashNode *const &nul() const;

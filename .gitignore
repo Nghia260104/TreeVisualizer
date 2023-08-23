@@ -1,1 +1,5 @@
 .vscode
+release/
+release
+SFML/
+SFML

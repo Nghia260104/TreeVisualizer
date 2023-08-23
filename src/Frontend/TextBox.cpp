@@ -1,6 +1,7 @@
 #include <TextBox.hpp>
 #include <string>
 #include <FrontendGlobal.hpp>
+using namespace Frontend;
 
 extern sf::RenderWindow window;
 
@@ -9,7 +10,7 @@ extern sf::RenderWindow window;
 TextBox::TextBox()
 {
     setPosition(0, 0);
-    setGlobalPosition(0, 0);
+    // setGlobalPosition(0, 0);
     setSize(50.0f, 50.0f);
     setOutlineColor();
     setFontSize();
@@ -35,7 +36,7 @@ TextBox::TextBox()
 TextBox::TextBox(float a, float b, float w, float h, unsigned int fontsize, sf::Vector2f pos)
 {
     setPosition(a, b);
-    setGlobalPosition(a, b);
+    // setGlobalPosition(a, b);
     setSize(w, h);
     setFontSize(fontsize);
     setOutlineColor();
@@ -62,7 +63,7 @@ TextBox::TextBox(float a, float b, float w, float h, unsigned int fontsize, sf::
 void TextBox::create(float a, float b, float w, float h, unsigned int fontsize, sf::Vector2f pos)
 {
     setPosition(a, b);
-    setGlobalPosition(a, b);
+    // setGlobalPosition(a, b);
     setSize(w, h);
     setFontSize(fontsize);
     setOutlineColor();

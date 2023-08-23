@@ -1,5 +1,6 @@
 #include <Button.hpp>
 #include <FrontendGlobal.hpp>
+using namespace Frontend;
 
 extern sf::RenderWindow window;
 
@@ -7,6 +8,7 @@ extern sf::RenderWindow window;
 
 Button::Button()
 {
+    Cover = sf::Color::Transparent;
 }
 
 Button::Button(sf::String S)
@@ -16,6 +18,11 @@ Button::Button(sf::String S)
     setFillColor();
     setOutline();
     setText(S);
+    hasImage = 0;
+    Image_x = Image_y = 0;
+    i_outline_thickness = 0;
+    hasImageOutline = 0;
+    Cover = sf::Color::Transparent;
 }
 
 void Button::create(float a, float b, float w, float h, sf::Font &font, unsigned int fontsize, sf::String S)
@@ -28,6 +35,11 @@ void Button::create(float a, float b, float w, float h, sf::Font &font, unsigned
     setFontSize(fontsize);
     setText(S);
     setTextPos();
+    hasImage = 0;
+    Image_x = Image_y = 0;
+    i_outline_thickness = 0;
+    hasImageOutline = 0;
+    Cover = sf::Color::Transparent;
 }
 
 // Box ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -77,6 +89,11 @@ void Button::setFont(sf::Font &font)
     Text.setFont(font);
 }
 
+void Button::setFontStyle(sf::Text::Style style)
+{
+    Text.setStyle(style);
+}
+
 void Button::setFontSize(unsigned int fontsize)
 {
     Text.setCharacterSize(fontsize);
@@ -95,12 +112,59 @@ void Button::setTextPos()
 
 void Button::setTextPos(float y)
 {
+    Text.setOrigin(Text.getGlobalBounds().width / 2, 1.0f * Text.getCharacterSize() / 2);
     Text.setPosition(RecSize.x / 2, y);
+}
+
+void Button::setTextPos(float x, float y, Button::Align Type)
+{
+    switch (Type)
+    {
+    case Button::Align::Left:
+        Text.setOrigin(0, 1.0f * Text.getCharacterSize() / 2);
+        break;
+    case Button::Align::Center:
+        Text.setOrigin(Text.getGlobalBounds().width / 2, 1.0f * Text.getCharacterSize() / 2);
+        break;
+    case Button::Align::Right:
+        Text.setOrigin(Text.getGlobalBounds().width, 1.0f * Text.getCharacterSize() / 2);
+        break;
+    default:
+        break;
+    }
+    Text.setPosition(x, y);
 }
 
 void Button::setTextColor(sf::Color color)
 {
     Text.setFillColor(color);
+}
+
+// Image ////////////////////////////////////////////////////////////////////////////////////////
+
+void Button::setImage(const std::string &fileName)
+{
+    hasImage = 1;
+    Image.loadFromFile(fileName);
+}
+
+void Button::setImagePosition(float x, float y)
+{
+    Image_x = x;
+    Image_y = y;
+}
+
+void Button::setImageOutline(sf::Color color, float thick)
+{
+    hasImageOutline = 1;
+    ImageOutlineColor = color;
+    i_outline_thickness = thick;
+}
+
+void Button::setImageColor(sf::Color color)
+{
+    hasImageColor = true;
+    CoverImage = color;
 }
 
 // Misc ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -141,6 +205,21 @@ void Button::drawTexture()
 {
     Texture.draw(Rec);
     Texture.draw(Text);
+    if (hasImage)
+    {
+        if (hasImageOutline)
+        {
+            sf::RectangleShape Tmp(sf::Vector2f(Image.getSize().x + 2 * i_outline_thickness, Image.getSize().y + 2 * i_outline_thickness));
+            Tmp.setFillColor(ImageOutlineColor);
+            Tmp.setPosition(Image_x - i_outline_thickness, Image_y - i_outline_thickness);
+            Texture.draw(Tmp);
+        }
+        sf::Sprite sprite(Image);
+        if (hasImageColor)
+            sprite.setColor(CoverImage);     
+        sprite.setPosition(Image_x, Image_y);
+        Texture.draw(sprite);
+    }
     Texture.display();
 }
 

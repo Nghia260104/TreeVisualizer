@@ -1,7 +1,7 @@
 #include <LoadFonts.hpp>
 #include <FrontendGlobal.hpp>
 
-void loadFont()
+void Frontend::loadFont()
 {
     RegularFont.loadFromFile("../resources/Font/Fira Code/FiraCode-Regular.ttf");
     BoldFont.loadFromFile("../resources/Font/Fira Code/FiraCode-Bold.ttf");
@@ -24,4 +24,6 @@ void loadFont()
     Over.loadFromFile("../resources/Font/TTF file/Overbrushing.otf");
     IA.loadFromFile("../resources/Font/TTF file/IA_Regular.ttf");
     Calibri.loadFromFile("../resources/Font/TTF file/calibrib.ttf");
+    Segoe.loadFromFile("../resources/Font/segoeui.ttf");
+    Abril.loadFromFile("../resources/Font/Abril_Display_Black.otf");
 }

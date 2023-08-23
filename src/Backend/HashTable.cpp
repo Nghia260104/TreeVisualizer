@@ -33,9 +33,9 @@ const int HashTable::size() const
 
 void HashTable::clear()
 {
-    for (HashNode *&i : Table)
+    for (int i = 0; i < Table.size(); i++)
     {
-        HashNode *Cur = i;
+        HashNode *Cur = Table[i];
         while (Cur)
         {
             HashNode *Tmp = Cur;
@@ -43,8 +43,9 @@ void HashTable::clear()
             delete Tmp;
             Tmp = nullptr;
         }
-        i = nullptr;
+        Table[i] = nullptr;
     }
+    Table.resize(0);
 }
 
 void HashTable::display() const
@@ -73,4 +74,21 @@ HashTable::~HashTable()
 int HashTable::Hash(const int &val) const
 {
     return val % Table.size();
+}
+
+void HashTable::resize(int n)
+{
+    for (int i = 0; i < Table.size(); i++)
+    {
+        HashNode *Cur = Table[i];
+        while (Cur)
+        {
+            HashNode *Tmp = Cur;
+            Cur = Cur->Child[0];
+            delete Tmp;
+            Tmp = nullptr;
+        }
+        Table[i] = nullptr;
+    }
+    Table.resize(n, nullptr);
 }

@@ -41,9 +41,9 @@ bool BST::checkHeight(Node *Cur, int val, int h)
     if (h >= limHeight())
         return false;
 
-    if (*Cur->val[0] > val)
+    if (Cur->val[0] > val)
         return checkHeight(Cur->Child[Left], val, h + 1);
-    else if (*Cur->val[0] < val)
+    else if (Cur->val[0] < val)
         return checkHeight(Cur->Child[Right], val, h + 1);
     else
         return true;
@@ -54,9 +54,9 @@ Node *BST::INSERT(Node *Cur, int val)
     if (!Cur)
         return newNode(val);
 
-    if (val < *Cur->val[0])
+    if (val < Cur->val[0])
         Cur->Child[Left] = INSERT(Cur->Child[Left], val);
-    else if (val > *Cur->val[0])
+    else if (val > Cur->val[0])
         Cur->Child[Right] = INSERT(Cur->Child[Right], val);
     else
     {
@@ -89,9 +89,9 @@ Node *BST::REMOVE(Node *Cur, int val, bool &check)
     if (!Cur)
         return Cur;
 
-    if (*Cur->val[0] > val)
+    if (Cur->val[0] > val)
         Cur->Child[Left] = REMOVE(Cur->Child[Left], val, check);
-    else if (*Cur->val[0] < val)
+    else if (Cur->val[0] < val)
         Cur->Child[Right] = REMOVE(Cur->Child[Right], val, check);
     else
     {
@@ -123,7 +123,7 @@ Node *BST::REMOVE(Node *Cur, int val, bool &check)
         {
             Node *InOrder = minValue(Cur->Child[Right]); // In_order successor
             *Cur = *InOrder;
-            Cur->Child[Right] = REMOVE(Cur->Child[Right], *InOrder->val[0], check);
+            Cur->Child[Right] = REMOVE(Cur->Child[Right], InOrder->val[0], check);
         }
     }
 
@@ -141,12 +141,12 @@ const Node *const &BST::SEARCH(const Node *const &Cur, int val) const
 {
     if (!Cur)
         return nul();
-    if (*Cur->val[0] == val)
+    if (Cur->val[0] == val)
         return Cur;
 
-    if (*Cur->val[0] > val)
+    if (Cur->val[0] > val)
         return SEARCH(Cur->Child[Left], val);
-    else if (*Cur->val[0] < val)
+    else if (Cur->val[0] < val)
         return SEARCH(Cur->Child[Right], val);
     
     return nul();
@@ -163,7 +163,7 @@ void BST::print(Node *Cur)
     if (!Cur)
         return;
     print(Cur->Child[Left]);
-    std::cerr << *Cur->val[0];
+    std::cerr << Cur->val[0];
     if (Cur->f > 1)
         std::cerr << '-' << Cur->f;
     std::cerr << " ";

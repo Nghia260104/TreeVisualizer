@@ -24,11 +24,11 @@ void Tree::clearChild(Node *&Cur)
         return;
     for (Node *&i : (Cur->Child))
         clearChild(i);
-    for (int i = 0; i < Cur->val.size(); i++)
-    {
-        delete Cur->val[i];
-        Cur->val[i] = nullptr;
-    }
+    // for (int i = 0; i < Cur->val.size(); i++)
+    // {
+    //     delete Cur->val[i];
+    //     Cur->val[i] = nullptr;
+    // }
     delete Cur;
     Cur = nullptr;
 }

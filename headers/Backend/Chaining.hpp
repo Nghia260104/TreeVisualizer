@@ -13,7 +13,7 @@ namespace Backend
         const HashNode *const &search(int val) const;
 
     private:
-        const int ChainLim = 4;
+        int ChainLim = 5;
         int numInserted;
     };
 }

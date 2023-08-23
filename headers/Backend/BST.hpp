@@ -22,8 +22,8 @@ namespace Backend
         bool remove(int val);
         Node *REMOVE(Node *Cur, int val, bool &check);
         Node *minValue(Node *Cur);
-        const Node *const &search(int val) const;
-        const Node *const &SEARCH(const Node *const &Cur, int val) const;
+        virtual const Node *const &search(int val) const;
+        virtual const Node *const &SEARCH(const Node *const &Cur, int val) const;
         void display();
         void print(Node *Cur);
         int max(int a, int b);
@@ -32,8 +32,8 @@ namespace Backend
         const int &limInsert();
 
     private:
-        const int limH = 8;
-        const int limI = 50;
+        int limH = 6;
+        const int limI = 63;
         int numInserted;
     };
 }

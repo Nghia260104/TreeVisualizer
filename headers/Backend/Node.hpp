@@ -1,20 +1,26 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <CircleNode.hpp>
 
 namespace Backend
 {
     struct Node
     {
         int h, f;
-        float x, y;
-        std::vector<int*> val;
+        int x, y;
+        int numVal;
+        bool leaf;
+        Node *Par;
+        std::vector<int> val;
         std::vector<Node *> Child;
-
-        Node(std::vector<int> a = {0}, int numVal = 1, int numChild = 1);
+        Frontend::CircleNode *Cur;
+        
+        Node(std::vector<int> a = {}, int num = 1, int numChild = 1);
+        ~Node();
         void operator=(const Node& x);
-        int numVal();
         int height();
+        int lowerbound(int x) const;
     };
 
     struct HashNode

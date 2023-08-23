@@ -1,5 +1,6 @@
 #include <Probing.hpp>
 #include <iostream>
+#include <FrontendGlobal.hpp>
 using namespace Backend;
 
 Probing::Probing(int num)
@@ -8,7 +9,6 @@ Probing::Probing(int num)
     std::cout << "Call constructor for Probing" << '\n';
     numInserted = 0;
     num %= limit;
-    // HashTable(num);
 }
 
 Probing::~Probing()
@@ -27,56 +27,146 @@ int Probing::index(const int &val, const int &steps, Type t) const
 
 bool Probing::canInsert(int val, Type t)
 {
-    return (numInserted < size() || SEARCH(val, t));
+    return (numInserted < size() || trySearch(val, t));
 }
 
-bool Probing::INSERT(int val, Type t)
+void Probing::resize(int n)
 {
-    if (numInserted >= size() && !SEARCH(val, t))
-        return false;
+    HashTable::resize(n);
+    numInserted = 0;
+}
+
+bool Probing::INSERT(int val, std::vector<Frontend::CircleNode> &Art, Type t)
+{
+    // if (numInserted >= size() && !trySearch(val, t))
+    //     return false;
+    Process a;
     for (int i = 0; i < size(); i++)
     {
-        HashNode *&Tmp = (*this)[index(val, i, t)];
+        a.reset();
+        int id = index(val, i, t);
+        HashNode *&Tmp = (*this)[id];
+        a.color = Highlight;
+        a.color_c = true;
+        a.emph = true;
+        a.Cur = &Art[id];
+        List.push_back(a);
         if (!Tmp)
         {
             Tmp = new HashNode(val);
+            a.val = std::to_string(val);
+            a.val_c = true;
+            a.emph = false;
             numInserted++;
+            List.push_back(a);
             return true;
         }
         else if (Tmp->val == val)
         {
-            (Tmp->f)++;
+            if (Tmp->f < 9)
+            {
+                (Tmp->f)++;
+                a.val = sf::String(std::to_string(Tmp->val) + "-" + std::to_string(Tmp->f));
+                a.val_c = true;
+            }
+            a.emph = false;
+            List.push_back(a);
             return true;
         }
         else if (Tmp->grave)
         {
             Tmp->val = val;
             Tmp->grave = 0;
+            a.val = std::to_string(val);
+            a.val_c = true;
             numInserted++;
+            a.emph = false;
+            List.push_back(a);
             return true;
         }
     }
+    a.emph = false;
+    List.push_back(a);
     return false;
 }
 
-bool Probing::REMOVE(int val, Type t)
+bool Probing::REMOVE(int val, std::vector<Frontend::CircleNode> &Art, Type t)
 {
+    Process a;
     for (int i = 0; i < size(); i++)
     {
-        HashNode *Tmp = (*this)[index(val, i, t)];
-        if (!Tmp)
+        a.reset();
+        int id = index(val, i, t);
+        HashNode *Tmp = (*this)[id];
+        a.color = Highlight;
+        a.color_c = true;
+        a.Cur = &Art[id];
+        a.emph = true;
+        List.push_back(a);
+        if (!Tmp || Tmp->grave)
+        {
+            a.emph = false;
+            List.push_back(a);
             return false;
+        }
         if (Tmp->val == val)
         {
-            Tmp->grave = 1;
+            a.emph = false;
+            a.val_c = true;
+            if (Tmp->f > 1)
+            {
+                Tmp->f--;
+                if (Tmp->f != 1)
+                    a.val = sf::String(std::to_string(Tmp->val) + "-" + std::to_string(Tmp->f));
+                else
+                    a.val = sf::String(std::to_string(Tmp->val));
+            }
+            else
+            {
+                Tmp->grave = 1;
+                numInserted--;
+                a.val = "DEL";
+            }
+            List.push_back(a);
             return true;
-            numInserted--;
         }
     }
+    a.emph = false;
+    List.push_back(a);
     return false;
 }
 
-const HashNode *const &Probing::SEARCH(int val, Type t) const
+const HashNode *const &Probing::SEARCH(int val, std::vector<Frontend::CircleNode> &Art, Type t) const
+{
+    Process a;
+    for (int i = 0; i < size(); i++)
+    {
+        a.reset();
+        int id = index(val, i, t);
+        a.Cur = &Art[id];
+        a.color = Highlight;
+        a.color_c = true;
+        a.emph = true;
+        List.push_back(a);
+        if (!(*this)[id])
+        {
+            a.emph = false;
+            List.push_back(a);
+            return nul();
+        }
+        if ((*this)[id]->val == val)
+        {
+            a.emph = false;
+            List.push_back(a);
+            return (*this)[id];
+        }
+    }
+    a.emph = false;
+    List.push_back(a);
+    return nul();
+}
+
+const HashNode *const &Probing::trySearch(int val, Type t) const
 {
     for (int i = 0; i < size(); i++)
     {
@@ -98,20 +188,20 @@ LP::LP(int num)
     // Probing(num);
 }
 
-bool LP::insert(int val)
+bool LP::insert(int val, std::vector<Frontend::CircleNode> &Art)
 {
     // std::cout << index(val, 0, Linear) << '\n';
-    return INSERT(val, Linear);
+    return INSERT(val, Art, Linear);
 }
 
-bool LP::remove(int val)
+bool LP::remove(int val, std::vector<Frontend::CircleNode> &Art)
 {
-    return REMOVE(val, Linear);
+    return REMOVE(val, Art, Linear);
 }
 
-const HashNode *const &LP::search(int val) const
+const HashNode *const &LP::search(int val, std::vector<Frontend::CircleNode> &Art) const
 {
-    return SEARCH(val, Linear);
+    return SEARCH(val, Art, Linear);
 }
 
 LP::~LP()
@@ -127,19 +217,19 @@ QP::QP(int num)
     // Probing(num);
 }
 
-bool QP::insert(int val)
+bool QP::insert(int val, std::vector<Frontend::CircleNode> &Art)
 {
-    return INSERT(val, Quadratic);
+    return INSERT(val, Art, Quadratic);
 }
 
-bool QP::remove(int val)
+bool QP::remove(int val, std::vector<Frontend::CircleNode> &Art)
 {
-    return REMOVE(val, Quadratic);
+    return REMOVE(val, Art, Quadratic);
 }
 
-const HashNode *const &QP::search(int val) const
+const HashNode *const &QP::search(int val, std::vector<Frontend::CircleNode> &Art) const
 {
-    return SEARCH(val, Quadratic);
+    return SEARCH(val, Art, Quadratic);
 }
 
 QP::~QP()
@@ -171,19 +261,19 @@ DH::DH(int num)
     }
 }
 
-bool DH::insert(int val)
+bool DH::insert(int val, std::vector<Frontend::CircleNode> &Art)
 {
-    return INSERT(val, Double);
+    return INSERT(val, Art, Double);
 }
 
-bool DH::remove(int val)
+bool DH::remove(int val, std::vector<Frontend::CircleNode> &Art)
 {
-    return REMOVE(val, Double);
+    return REMOVE(val, Art, Double);
 }
 
-const HashNode *const &DH::search(int val) const
+const HashNode *const &DH::search(int val, std::vector<Frontend::CircleNode> &Art) const
 {
-    return SEARCH(val, Double);
+    return SEARCH(val, Art, Double);
 }
 
 DH::~DH()
