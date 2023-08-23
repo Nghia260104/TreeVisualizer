@@ -269,35 +269,35 @@ Node *AVL::INSERT(Node *Cur, int val, bool rotate)
         if (bf > 1 && val < Cur->Child[Left]->val[0])
         {
             std::cerr << "Right rotate\n";
-            Node *Par = Cur->Par;
+            // Node *Par = Cur->Par;
             Node *Child = rightRotate(Cur, Tmp);
-            if (Par->Child[Left] == Cur)
-                Par->Child[Left] = Child;
-            else
-                Par->Child[Right] = Child;
+            // if (Par->Child[Left] == Cur)
+            //     Par->Child[Left] = Child;
+            // else
+            //     Par->Child[Right] = Child;
 
-            int order = 0;
-            setPosition(root(), 0, order, Tmp);
-            setArcPosition(root(), Tmp);
+            // int order = 0;
+            // setPosition(root(), 0, order, Tmp);
+            // setArcPosition(root(), Tmp);
 
-            windowHandle.push_back(Tmp);
+            // windowHandle.push_back(Tmp);
             return Child;
         }
         std::cerr << "Check left rotate\n";
         if (bf < -1 && val > Cur->Child[Right]->val[0])
         {
             std::cerr << "Left rotate\n";
-            Node *Par = Cur->Par;
+            // Node *Par = Cur->Par;
             Node *Child = leftRotate(Cur, Tmp);
-            if (Par->Child[Left] == Cur)
-                Par->Child[Left] = Child;
-            else
-                Par->Child[Right] = Child;
-            int order = 0;
-            setPosition(root(), 0, order, Tmp);
-            setArcPosition(root(), Tmp);
+            // if (Par->Child[Left] == Cur)
+            //     Par->Child[Left] = Child;
+            // else
+            //     Par->Child[Right] = Child;
+            // int order = 0;
+            // setPosition(root(), 0, order, Tmp);
+            // setArcPosition(root(), Tmp);
 
-            windowHandle.push_back(Tmp);
+            // windowHandle.push_back(Tmp);
             return Child;
         }
         std::cerr << "Check left-right rotate\n";
