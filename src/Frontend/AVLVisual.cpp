@@ -172,7 +172,7 @@ void AVLVisual::processEvent(const sf::Event &event)
                 std::cerr << "\n";
                 for (int j = 0; j < val; j++)
                 {
-                    std::cerr << (!Arc[j].isHidden() ? "Show" : "Hide");
+                    std::cerr << (!Arc[j].isHidden() ? "Show-" : "Hide-");
                     std::cerr << (Arc[j].getThickness()) << " ";
                 }
                 drawTexture();

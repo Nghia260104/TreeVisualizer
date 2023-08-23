@@ -191,7 +191,7 @@ void Handle::stepback()
                                          list[step + 1][j].ArcColor.g + 1.0f * i * (list[step][j].ArcColor.g - list[step + 1][j].ArcColor.g) / (1.0f * interval),
                                          list[step + 1][j].ArcColor.b + 1.0f * i * (list[step][j].ArcColor.b - list[step + 1][j].ArcColor.b) / (1.0f * interval));
                     list[step][j].Arc->setFillColor(change_arc);
-                    list[step][j].Arc->setThickness(list[step - 1][j].thickness + 1.0f * i * (list[step][j].thickness - list[step][j].thickness) / (1.0f * interval));
+                    list[step][j].Arc->setThickness(list[step + 1][j].thickness + 1.0f * i * (list[step][j].thickness - list[step + 1][j].thickness) / (1.0f * interval));
                     float x1 = list[step + 1][j].ArcFirstPosition.x + 1.0f * i * (list[step][j].ArcFirstPosition.x - list[step + 1][j].ArcFirstPosition.x) / (1.0f * interval),
                           y1 = list[step + 1][j].ArcFirstPosition.y + 1.0f * i * (list[step][j].ArcFirstPosition.y - list[step + 1][j].ArcFirstPosition.y) / (1.0f * interval);
                     float x2 = list[step + 1][j].ArcSecondPosition.x + 1.0f * i * (list[step][j].ArcSecondPosition.x - list[step + 1][j].ArcSecondPosition.x) / (1.0f * interval),
