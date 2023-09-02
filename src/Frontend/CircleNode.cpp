@@ -220,3 +220,12 @@ void CircleNode::draw(sf::RenderTarget &target, sf::RenderStates states) const
     sprite.setPosition(x - 34, y - 34);
     target.draw(sprite);
 }
+
+bool CircleNode::mouseOn(const sf::Vector2i &MousePos)
+{
+    float tmp_x = MousePos.x - x, tmp_y = MousePos.y - y;
+    float dis = tmp_x * tmp_x + tmp_y * tmp_y;
+    if (dis <= r * r)
+        return true;
+    return false;
+}

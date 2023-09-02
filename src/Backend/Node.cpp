@@ -73,15 +73,26 @@ HashNode::HashNode(int a, int numChild)
     f = 1;
     x = y = 0;
     Child.resize(numChild);
-    for (HashNode *i : Child)
+    for (HashNode *&i : Child)
         i = nullptr;
 }
 
-StrNode::StrNode(std::string a, int numChild)
+StrNode::StrNode(std::string a, int numChild_)
 {
     val = a;
-    x = y = 0;
-    Child.resize(numChild);
-    for (StrNode *i : Child)
+    min_x = max_x = y = 0;
+    isEndOfWord = false;
+    Child.resize(numChild_);
+    for (StrNode *&i : Child)
         i = nullptr;
+    vs_id = 0;
+}
+
+int StrNode::numChild()
+{
+    int cnt = 0;
+    for (StrNode *&i : Child)
+        if (i)
+            cnt++;
+    return cnt;
 }

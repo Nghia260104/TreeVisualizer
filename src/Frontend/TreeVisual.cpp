@@ -55,6 +55,7 @@ void TreeVisual::create()
     Avl_tree.create();
     MinHeap_Tree.create();
     MaxHeap_Tree.create();
+    Trie_Tree.create();
 
     Predraw();
 }
@@ -93,6 +94,11 @@ void TreeVisual::drawTexture(const int &layer)
     {
         MinHeap_Tree.drawTexture();
         Texture.draw(MinHeap_Tree);
+    }
+    if (layer == Trie)
+    {
+        Trie_Tree.drawTexture();
+        Texture.draw(Trie_Tree);
     }
     Texture.display();
 }
@@ -134,6 +140,12 @@ void TreeVisual::processEvent(const sf::Event &event, int &layer)
                     MinHeap_Tree.drawTexture();
                     drawTexture(layer);
                     break;
+                case 3:
+                    layer = Trie;
+                    Trie_Tree.clear();
+                    Trie_Tree.drawTexture();
+                    drawTexture(layer);
+                    break;
                 default:
                     break;
                 }
@@ -155,6 +167,11 @@ void TreeVisual::processEvent(const sf::Event &event, int &layer)
         MinHeap_Tree.processEvent(event);
         Texture.draw(MinHeap_Tree);
     }
+    if (layer == Trie)
+    {
+        Trie_Tree.processEvent(event);
+        Texture.draw(Trie_Tree);
+    }
     Texture.display();
 }
 
@@ -164,4 +181,23 @@ bool TreeVisual::mouseOnButton(const sf::Vector2i &MousePos)
     for (int i = 0; i < 5; i++)
         check |= DataType[i].mouseOn(MousePos);
     return check;
+}
+
+void TreeVisual::ReSetting()
+{
+    Texture.clear(BackgroundColor);
+    Name.setFillColor(TextColor);
+    for (int i = 0; i < 5; i++)
+    {
+        DataType[i].setFillColor(ToolBarColor);
+        DataType[i].setTextColor(SpecialTextColor);
+        DataType[i].setCoverColor(sf::Color(__max((ToolBarColor.r - 50) % 255, (ToolBarColor.r + 50) % 255),
+                                            __max((ToolBarColor.g - 50) % 255, (ToolBarColor.g + 50) % 255),
+                                            __max((ToolBarColor.b - 50) % 255, (ToolBarColor.b + 50) % 255), 5));
+        DataType[i].drawTexture();
+    }
+    Avl_tree.ReSetting();
+    MinHeap_Tree.ReSetting();
+    MaxHeap_Tree.ReSetting();
+    Trie_Tree.ReSetting();
 }

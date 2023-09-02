@@ -5,6 +5,7 @@ using namespace Frontend;
 
 Pattern::Pattern()
 {
+    speed = 0;
 }
 
 void Pattern::create()
@@ -23,6 +24,15 @@ void Pattern::create()
     NavigateBox.setSize(sf::Vector2f(130, 50));
     NavigateBox.setFillColor(ToolBarColor);
     NavigateBox.setPosition(window.getSize().x / 2 - 65, window.getSize().y - 50);
+
+    // Speed Button
+    Spd.create(window.getSize().x / 2 + 200, window.getSize().y - 50, 50, 50, Segoe, fontsize, "1x");
+    Spd.setFillColor(ToolBarColor);
+    Spd.setTextColor(SpecialTextColor);
+    Spd.setCoverColor(sf::Color(__max((ToolBarColor.r - 50) % 255, (ToolBarColor.r + 50) % 255),
+                                __max((ToolBarColor.g - 50) % 255, (ToolBarColor.g + 50) % 255),
+                                __max((ToolBarColor.b - 50) % 255, (ToolBarColor.b + 50) % 255), 50));
+    Spd.drawTexture();
 
     // Navigate Button
     std::string Tmp[3] = {"stepback.png", "start.png", "stepforw.png"};
@@ -47,6 +57,26 @@ void Pattern::draw(sf::RenderTarget &target, sf::RenderStates states) const
 
 void Pattern::drawTexture()
 {
+}
+
+void Pattern::ReSetting()
+{
+    Texture.clear(BackgroundColor);
+    Artwork.setFillColor(BackgroundColor);
+    NavigateBox.setFillColor(ToolBarColor);
+    for (int i = 0; i < 3; i++)
+    {
+        Navigate[i].setFillColor(BackgroundColor);
+        Navigate[i].setImageColor(ToolBarColor);
+        Navigate[i].setCoverColor(sf::Color(__max((ToolBarColor.r - 50) % 255, (ToolBarColor.r + 50) % 255),
+                                __max((ToolBarColor.g - 50) % 255, (ToolBarColor.g + 50) % 255),
+                                __max((ToolBarColor.b - 50) % 255, (ToolBarColor.b + 50) % 255), 50));
+    }
+    Spd.setFillColor(ToolBarColor);
+    Spd.setTextColor(SpecialTextColor);
+    Spd.setCoverColor(sf::Color(__max((ToolBarColor.r - 50) % 255, (ToolBarColor.r + 50) % 255),
+                                __max((ToolBarColor.g - 50) % 255, (ToolBarColor.g + 50) % 255),
+                                __max((ToolBarColor.b - 50) % 255, (ToolBarColor.b + 50) % 255), 50));
 }
 
 void Pattern::Navigating(const sf::Event &event)
@@ -86,5 +116,18 @@ void Pattern::Navigating(const sf::Event &event)
             }
             return;
         }
+    }
+}
+
+void Pattern::changeSpd(const sf::Event &event)
+{
+    Texture.draw(Spd);
+    if (Spd.isPressed(event))
+    {
+        speed = (speed + 1) % 4;
+        Spd.setText(S[speed]);
+        interval = timeInterval[speed];
+        Spd.drawTexture();
+        return;
     }
 }

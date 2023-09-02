@@ -46,7 +46,7 @@ void HeapVisual::create()
         Start[i].setOutline(SpecialTextColor);
         Start[i].drawTexture();
     }
-    f[4].create(230, window.getSize().y - 150, 60, 50, textsize, sf::Vector2f(8, 25));
+    f[4].create(230, window.getSize().y - 150, 70, 50, textsize, sf::Vector2f(8, 25));
     f[4].setFillColor(BackgroundColor);
     f[4].setTextColor(TextColor);
     f[4].setOutlineColor(TextColor, TextColor);
@@ -58,7 +58,7 @@ void HeapVisual::create()
     f[4].setLimit(2);
     f[4].drawTexture();
 
-    f[5].create(380, window.getSize().y - 150, 60, 50, textsize, sf::Vector2f(8, 25));
+    f[5].create(400, window.getSize().y - 150, 60, 50, textsize, sf::Vector2f(8, 25));
     f[5].setFillColor(BackgroundColor);
     f[5].setTextColor(TextColor);
     f[5].setOutlineColor(TextColor, TextColor);
@@ -82,11 +82,11 @@ void HeapVisual::create()
     ID_frame.setOutlineThickness(-1);
     ID_frame.setPosition(150, window.getSize().y - 150);
 
-    Val_frame.setSize(sf::Vector2f(90, 50));
+    Val_frame.setSize(sf::Vector2f(100, 50));
     Val_frame.setFillColor(BackgroundColor);
     Val_frame.setOutlineColor(TextColor);
     Val_frame.setOutlineThickness(-1);
-    Val_frame.setPosition(290, window.getSize().y - 150);
+    Val_frame.setPosition(300, window.getSize().y - 150);
 
     Extract_frame.setSize(sf::Vector2f(150, 50));
     Extract_frame.setFillColor(BackgroundColor);
@@ -113,7 +113,7 @@ void HeapVisual::create()
     Val_title.setFillColor(TextColor);
     Val_title.setFont(Segoe);
     Val_title.setOrigin(0, Val_title.getGlobalBounds().height / 2);
-    Val_title.setPosition(298, window.getSize().y - 125);
+    Val_title.setPosition(308, window.getSize().y - 125);
 
     Extract_val.setString("Value: ");
     Extract_val.setCharacterSize(textsize);
@@ -196,6 +196,8 @@ void HeapVisual::drawTexture()
         Navigate[i].drawTexture();
         Texture.draw(Navigate[i]);
     }
+    Spd.drawTexture();
+    Texture.draw(Spd);
     if (fail == oversize)
         Texture.draw(Overload);
     else if (fail == rand_size)
@@ -208,6 +210,7 @@ void HeapVisual::drawTexture()
 
 void HeapVisual::processEvent(const sf::Event &event)
 {
+    changeSpd(event);
     Navigating(event);
     for (int i = 0; i < 6; i++)
         if (f[i].checkEvent(event) && !keepRunning)
@@ -352,6 +355,7 @@ void HeapVisual::clear()
         f[i].erase();
     Size.setString("Size: ");
     Extract_val.setString("Value: ");
+    interval = 1200;
 }
 
 void HeapVisual::clearGpx()
@@ -427,4 +431,52 @@ HeapVisual::~HeapVisual()
 void HeapVisual::setType(Backend::Heap::Type t_)
 {
     t = t_;
+}
+
+void HeapVisual::ReSetting()
+{
+    Pattern::ReSetting();
+    ToolBar.setFillColor(ToolBarColor);
+    for (int i = 0; i < 6; i++)
+    {
+        f[i].setFillColor(BackgroundColor);
+        f[i].setTextColor(TextColor);
+    }
+    for (int i = 0; i < 7; i++)
+    {
+        Start[i].setFillColor(ToolBarColor);
+        Start[i].setTextColor(SpecialTextColor);
+        Start[i].setCoverColor(sf::Color(__max((ToolBarColor.r - 50) % 255, (ToolBarColor.r + 50) % 255),
+                                         __max((ToolBarColor.g - 50) % 255, (ToolBarColor.g + 50) % 255),
+                                         __max((ToolBarColor.b - 50) % 255, (ToolBarColor.b + 50) % 255), 50));
+    }
+    SizeBox.setFillColor(BackgroundColor);
+    SizeBox.setOutlineColor(TextColor);
+    ID_frame.setFillColor(BackgroundColor);
+    ID_frame.setOutlineColor(TextColor);
+    Val_frame.setFillColor(BackgroundColor);
+    Val_frame.setOutlineColor(TextColor);
+    Extract_frame.setFillColor(BackgroundColor);
+    Extract_frame.setOutlineColor(TextColor);
+    Overload.setFillColor(TextColor);
+    RandomErr.setFillColor(TextColor);
+    Null_Node.setFillColor(TextColor);
+    Size.setFillColor(TextColor);
+    ID_title.setFillColor(TextColor);
+    Val_title.setFillColor(TextColor);
+    Extract_val.setFillColor(TextColor);
+    if (Table)
+        for (int i = 0; i < limit; i++)
+        {
+            Table[i].setRadius(g_radius);
+            Table[i].setFillColor(BackgroundColor);
+            Table[i].setTextColor(TextColor);
+            Table[i].setOutline(TextColor);
+        }
+    if (Arc)
+        for (int i = 0; i < limit; i++)
+        {
+            Arc[i].setThickness(0.1f * g_radius);
+            Arc[i].setFillColor(TextColor);
+        }
 }

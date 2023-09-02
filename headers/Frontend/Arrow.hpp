@@ -7,8 +7,9 @@ namespace Frontend
     {
         sf::VertexArray lines;
         float thickness;
-        bool hidden;
+        bool hidden, hasWeight;
         sf::Vector2f point1, point2;
+        sf::Text weight;
     public:
         Arrow();
         Arrow(sf::Vector2f pos1, sf::Vector2f pos2, float thick);
@@ -19,7 +20,11 @@ namespace Frontend
         const sf::Vector2f getFirstPosition();
         const sf::Vector2f getSecondPosition();
         void setFillColor(sf::Color color);
+        void setTextColor(sf::Color color);
+        void setFontSize(int size);
         const sf::Color &getFillColor();
+        void setWeight(const sf::String &val);
+        const sf::String &getWeight();
         bool isHidden();
         void hide();
         void show();

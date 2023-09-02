@@ -164,3 +164,21 @@ bool TableVisual::mouseOnButton(const sf::Vector2i &MousePos)
         check |= DataType[i].mouseOn(MousePos);
     return check;
 }
+
+void TableVisual::ReSetting()
+{
+    Texture.clear(BackgroundColor);
+    Name.setFillColor(TextColor);
+    for (int i = 0; i < 3; i++)
+    {
+        DataType[i].setFillColor(ToolBarColor);
+        DataType[i].setTextColor(SpecialTextColor);
+        DataType[i].setCoverColor(sf::Color(__max((ToolBarColor.r - 50) % 255, (ToolBarColor.r + 50) % 255),
+                                            __max((ToolBarColor.g - 50) % 255, (ToolBarColor.g + 50) % 255),
+                                            __max((ToolBarColor.b - 50) % 255, (ToolBarColor.b + 50) % 255), 5));
+        DataType[i].drawTexture();
+    }
+    Linear.ReSetting();
+    Quadratic.ReSetting();
+    Hash.ReSetting();
+}

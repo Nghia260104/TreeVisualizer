@@ -101,7 +101,7 @@ Node *Heap::operator[](int index)
         Tmp[vs_id].NodeTextColor = BackgroundColor;
         Tmp[vs_id].OutlineColor = Highlight;
         Tmp[vs_id + lim + 1].ArcColor = Highlight;
-        Tmp[vs_id + lim + 1].thickness = 0.15f * g_radius;
+        Tmp[vs_id + lim + 1].thickness = 0.2f * g_radius;
         windowHandle.push_back(Tmp);
     }
     std::cerr << "Get *this[id] = " << Cur << "\n";
@@ -275,7 +275,7 @@ bool Heap::INSERT(int val, Type t)
         Tmp[vs_id].OutlineColor = Highlight;
         Tmp[vs_id].NodeTextColor = BackgroundColor;
         Tmp[vs_id + lim + 1].ArcColor = Highlight;
-        Tmp[vs_id + lim + 1].thickness = 0.15f * g_radius;
+        Tmp[vs_id + lim + 1].thickness = 0.2f * g_radius;
         windowHandle.push_back(Tmp);
         if (Cmp(val, Cur->val[0], t))
         {
@@ -317,7 +317,7 @@ bool Heap::INSERT(int val, Type t)
     {
         Tmp[size + lim + 1].hideArc = 0;
         Tmp[size + lim + 1].ArcColor = Highlight;
-        Tmp[size + lim + 1].thickness = 0.15f * g_radius;
+        Tmp[size + lim + 1].thickness = 0.2f * g_radius;
         Par->Child[(bool)(id & mask)] = New;
         int order = 0;
         setPosition(root(), 0, order, Tmp);

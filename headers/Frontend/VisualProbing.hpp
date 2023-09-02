@@ -36,6 +36,7 @@ namespace Frontend
         // Misc
         void processEvent(const sf::Event &event);
         void setType(Backend::Probing::Type t_);
+        void ReSetting();
 
         // Destructor
         virtual ~VisualProbing();

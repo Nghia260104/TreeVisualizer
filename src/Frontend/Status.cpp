@@ -37,7 +37,7 @@ void Status::NormalNode()
 void Status::highlightArc()
 {
     ArcColor = Highlight;
-    thickness = 0.15f * g_radius;
+    thickness = 0.2f * g_radius;
 }
 
 void Status::ArcOnPath()
@@ -55,6 +55,17 @@ void Status::NormalArc()
 Handle::Handle()
 {
     step = 0;
+    graph = 0;
+}
+
+void Handle::setGraph()
+{
+    graph = 1;
+}
+
+void Handle::setNonGraph()
+{
+    graph = 0;
 }
 
 void Handle::push_back(std::vector<Status> Tmp)
@@ -90,7 +101,8 @@ void Handle::clear()
                 list.back()[i].Node->setOutline(TextColor);
                 list.back()[i].Node->setText(list.back()[i].nodeVal);
                 list.back()[i].Node->setTextColor(TextColor);
-                list.back()[i].Node->setPosition(list.back()[i].NodePosition.x, list.back()[i].NodePosition.y);
+                if (!graph)
+                    list.back()[i].Node->setPosition(list.back()[i].NodePosition.x, list.back()[i].NodePosition.y);
                 list.back()[i].Node->toPar = list.back()[i].Node->toPar;
                 if (list.back()[i].hideNode)
                     list.back()[i].Node->hide();
@@ -100,8 +112,11 @@ void Handle::clear()
             if (list.back()[i].Arc)
             {
                 list.back()[i].Arc->setFillColor(TextColor);
-                list.back()[i].Arc->setFirstPosition(list.back()[i].ArcFirstPosition);
-                list.back()[i].Arc->setSecondPosition(list.back()[i].ArcSecondPosition);
+                if (!graph)
+                {
+                    list.back()[i].Arc->setFirstPosition(list.back()[i].ArcFirstPosition);
+                    list.back()[i].Arc->setSecondPosition(list.back()[i].ArcSecondPosition);
+                }
                 list.back()[i].Arc->setThickness(0.1f * g_radius);
                 if (list.back()[i].hideArc)
                     list.back()[i].Arc->hide();
@@ -147,9 +162,12 @@ void Handle::stepforw()
                     list[step][j].Node->setFillColor(change_Fill);
                     list[step][j].Node->setOutline(change_out);
                     list[step][j].Node->setTextColor(change_text);
-                    float x = list[step - 1][j].NodePosition.x + 1.0f * i * (list[step][j].NodePosition.x - list[step - 1][j].NodePosition.x) / (1.0f * interval),
-                          y = list[step - 1][j].NodePosition.y + 1.0f * i * (list[step][j].NodePosition.y - list[step - 1][j].NodePosition.y) / (1.0f * interval);
-                    list[step][j].Node->setPosition(x, y);
+                    if (!graph)
+                    {
+                        float x = list[step - 1][j].NodePosition.x + 1.0f * i * (list[step][j].NodePosition.x - list[step - 1][j].NodePosition.x) / (1.0f * interval),
+                              y = list[step - 1][j].NodePosition.y + 1.0f * i * (list[step][j].NodePosition.y - list[step - 1][j].NodePosition.y) / (1.0f * interval);
+                        list[step][j].Node->setPosition(x, y);
+                    }
                     if (i >= interval / 2)
                         list[step][j].Node->setText(list[step][j].nodeVal);
                     if (!list[step][j].hideNode)
@@ -161,19 +179,23 @@ void Handle::stepforw()
                 {
                     sf::Color change_arc(list[step - 1][j].ArcColor.r + 1.0f * i * (list[step][j].ArcColor.r - list[step - 1][j].ArcColor.r) / (1.0f * interval),
                                          list[step - 1][j].ArcColor.g + 1.0f * i * (list[step][j].ArcColor.g - list[step - 1][j].ArcColor.g) / (1.0f * interval),
-                                         list[step - 1][j].ArcColor.b + 1.0f * i * (list[step][j].ArcColor.b - list[step - 1][j].ArcColor.b) / (1.0f * interval));
+                                         list[step - 1][j].ArcColor.b + 1.0f * i * (list[step][j].ArcColor.b - list[step - 1][j].ArcColor.b) / (1.0f * interval),
+                                         list[step - 1][j].ArcColor.a + 1.0f * i * (list[step][j].ArcColor.a - list[step - 1][j].ArcColor.a) / (1.0f * interval));
                     list[step][j].Arc->setFillColor(change_arc);
                     list[step][j].Arc->setThickness(list[step - 1][j].thickness + 1.0f * i * (list[step][j].thickness - list[step - 1][j].thickness) / (1.0f * interval));
-                    float x1 = list[step - 1][j].ArcFirstPosition.x + 1.0f * i * (list[step][j].ArcFirstPosition.x - list[step - 1][j].ArcFirstPosition.x) / (1.0f * interval),
-                          y1 = list[step - 1][j].ArcFirstPosition.y + 1.0f * i * (list[step][j].ArcFirstPosition.y - list[step - 1][j].ArcFirstPosition.y) / (1.0f * interval);
-                    float x2 = list[step - 1][j].ArcSecondPosition.x + 1.0f * i * (list[step][j].ArcSecondPosition.x - list[step - 1][j].ArcSecondPosition.x) / (1.0f * interval),
-                          y2 = list[step - 1][j].ArcSecondPosition.y + 1.0f * i * (list[step][j].ArcSecondPosition.y - list[step - 1][j].ArcSecondPosition.y) / (1.0f * interval);
+                    if (!graph)
+                    {
+                        float x1 = list[step - 1][j].ArcFirstPosition.x + 1.0f * i * (list[step][j].ArcFirstPosition.x - list[step - 1][j].ArcFirstPosition.x) / (1.0f * interval),
+                              y1 = list[step - 1][j].ArcFirstPosition.y + 1.0f * i * (list[step][j].ArcFirstPosition.y - list[step - 1][j].ArcFirstPosition.y) / (1.0f * interval);
+                        float x2 = list[step - 1][j].ArcSecondPosition.x + 1.0f * i * (list[step][j].ArcSecondPosition.x - list[step - 1][j].ArcSecondPosition.x) / (1.0f * interval),
+                              y2 = list[step - 1][j].ArcSecondPosition.y + 1.0f * i * (list[step][j].ArcSecondPosition.y - list[step - 1][j].ArcSecondPosition.y) / (1.0f * interval);
+                        list[step][j].Arc->setFirstPosition(sf::Vector2f(x1, y1));
+                        list[step][j].Arc->setSecondPosition(sf::Vector2f(x2, y2));
+                    }
                     if (!list[step][j].hideArc)
                         list[step][j].Arc->show();
                     else
                         list[step][j].Arc->hide();
-                    list[step][j].Arc->setFirstPosition(sf::Vector2f(x1, y1));
-                    list[step][j].Arc->setSecondPosition(sf::Vector2f(x2, y2));
                 }
             }
         }
@@ -213,9 +235,12 @@ void Handle::stepback()
                     list[step][j].Node->setFillColor(change_Fill);
                     list[step][j].Node->setOutline(change_out);
                     list[step][j].Node->setTextColor(change_text);
-                    float x = list[step + 1][j].NodePosition.x + 1.0f * i * (list[step][j].NodePosition.x - list[step + 1][j].NodePosition.x) / (1.0f * interval),
-                          y = list[step + 1][j].NodePosition.y + 1.0f * i * (list[step][j].NodePosition.y - list[step + 1][j].NodePosition.y) / (1.0f * interval);
-                    list[step][j].Node->setPosition(x, y);
+                    if (!graph)
+                    {
+                        float x = list[step + 1][j].NodePosition.x + 1.0f * i * (list[step][j].NodePosition.x - list[step + 1][j].NodePosition.x) / (1.0f * interval),
+                              y = list[step + 1][j].NodePosition.y + 1.0f * i * (list[step][j].NodePosition.y - list[step + 1][j].NodePosition.y) / (1.0f * interval);
+                        list[step][j].Node->setPosition(x, y);
+                    }
                     if (i >= interval / 2)
                         list[step][j].Node->setText(list[step][j].nodeVal);
                     if (!list[step][j].hideNode)
@@ -227,15 +252,19 @@ void Handle::stepback()
                 {
                     sf::Color change_arc(list[step + 1][j].ArcColor.r + 1.0f * i * (list[step][j].ArcColor.r - list[step + 1][j].ArcColor.r) / (1.0f * interval),
                                          list[step + 1][j].ArcColor.g + 1.0f * i * (list[step][j].ArcColor.g - list[step + 1][j].ArcColor.g) / (1.0f * interval),
-                                         list[step + 1][j].ArcColor.b + 1.0f * i * (list[step][j].ArcColor.b - list[step + 1][j].ArcColor.b) / (1.0f * interval));
+                                         list[step + 1][j].ArcColor.b + 1.0f * i * (list[step][j].ArcColor.b - list[step + 1][j].ArcColor.b) / (1.0f * interval),
+                                         list[step + 1][j].ArcColor.a + 1.0f * i * (list[step][j].ArcColor.a - list[step + 1][j].ArcColor.a) / (1.0f * interval));
                     list[step][j].Arc->setFillColor(change_arc);
                     list[step][j].Arc->setThickness(list[step + 1][j].thickness + 1.0f * i * (list[step][j].thickness - list[step + 1][j].thickness) / (1.0f * interval));
-                    float x1 = list[step + 1][j].ArcFirstPosition.x + 1.0f * i * (list[step][j].ArcFirstPosition.x - list[step + 1][j].ArcFirstPosition.x) / (1.0f * interval),
-                          y1 = list[step + 1][j].ArcFirstPosition.y + 1.0f * i * (list[step][j].ArcFirstPosition.y - list[step + 1][j].ArcFirstPosition.y) / (1.0f * interval);
-                    float x2 = list[step + 1][j].ArcSecondPosition.x + 1.0f * i * (list[step][j].ArcSecondPosition.x - list[step + 1][j].ArcSecondPosition.x) / (1.0f * interval),
-                          y2 = list[step + 1][j].ArcSecondPosition.y + 1.0f * i * (list[step][j].ArcSecondPosition.y - list[step + 1][j].ArcSecondPosition.y) / (1.0f * interval);
-                    list[step][j].Arc->setFirstPosition(sf::Vector2f(x1, y1));
-                    list[step][j].Arc->setSecondPosition(sf::Vector2f(x2, y2));
+                    if (!graph)
+                    {
+                        float x1 = list[step + 1][j].ArcFirstPosition.x + 1.0f * i * (list[step][j].ArcFirstPosition.x - list[step + 1][j].ArcFirstPosition.x) / (1.0f * interval),
+                              y1 = list[step + 1][j].ArcFirstPosition.y + 1.0f * i * (list[step][j].ArcFirstPosition.y - list[step + 1][j].ArcFirstPosition.y) / (1.0f * interval);
+                        float x2 = list[step + 1][j].ArcSecondPosition.x + 1.0f * i * (list[step][j].ArcSecondPosition.x - list[step + 1][j].ArcSecondPosition.x) / (1.0f * interval),
+                              y2 = list[step + 1][j].ArcSecondPosition.y + 1.0f * i * (list[step][j].ArcSecondPosition.y - list[step + 1][j].ArcSecondPosition.y) / (1.0f * interval);
+                        list[step][j].Arc->setFirstPosition(sf::Vector2f(x1, y1));
+                        list[step][j].Arc->setSecondPosition(sf::Vector2f(x2, y2));
+                    }
                     if (!list[step][j].hideArc)
                         list[step][j].Arc->show();
                     else

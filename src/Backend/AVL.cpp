@@ -170,7 +170,7 @@ Node *AVL::INSERT(Node *Cur, int val, bool rotate)
         {
             Tmp[Num() + limInsert()].hideArc = 0;
             Tmp[Num() + limInsert()].ArcColor = Highlight;
-            Tmp[Num() + limInsert()].thickness = 0.15f * g_radius;
+            Tmp[Num() + limInsert()].thickness = 0.2f * g_radius;
         }
         windowHandle.push_back(Tmp);
         Num()++;
@@ -189,7 +189,7 @@ Node *AVL::INSERT(Node *Cur, int val, bool rotate)
             if (Cur != root())
             {
                 Tmp[i + limInsert()].ArcColor = Highlight;
-                Tmp[i + limInsert()].thickness = 0.15f * g_radius;
+                Tmp[i + limInsert()].thickness = 0.2f * g_radius;
             }
             break;
         }
@@ -391,7 +391,7 @@ Node *AVL::REMOVE(Node *Cur, int val, bool &check)
             if (Cur != root())
             {
                 Tmp[i + limInsert()].ArcColor = Highlight;
-                Tmp[i + limInsert()].thickness = 0.15f * g_radius;
+                Tmp[i + limInsert()].thickness = 0.2f * g_radius;
             }
             break;
         }
@@ -633,7 +633,7 @@ const Node *const &AVL::SEARCH(const Node *const &Cur, int val)
             if (Cur != root())
             {
                 Tmp[i + limInsert()].ArcColor = Highlight;
-                Tmp[i + limInsert()].thickness = 0.15f * g_radius;
+                Tmp[i + limInsert()].thickness = 0.2f * g_radius;
             }
             break;
         }
@@ -694,7 +694,7 @@ Node *AVL::leftRotate(Node *Cur, std::vector<Status> &Tmp)
     Tmp[x_id].NodeTextColor = BackgroundColor;
     Tmp[cur_id + limInsert()].ArcSecondPosition = Tmp[x_id].NodePosition;
     Tmp[cur_id + limInsert()].ArcColor = Highlight;
-    Tmp[cur_id + limInsert()].thickness = 0.15f * g_radius;
+    Tmp[cur_id + limInsert()].thickness = 0.2f * g_radius;
     Tmp[cur_id + limInsert()].hideArc = 0;
     if (y_id != -1)
     {
@@ -703,13 +703,13 @@ Node *AVL::leftRotate(Node *Cur, std::vector<Status> &Tmp)
         Tmp[y_id].NodeTextColor = BackgroundColor;
         Tmp[y_id + limInsert()].ArcSecondPosition = Tmp[cur_id].NodePosition;
         Tmp[y_id + limInsert()].ArcColor = Highlight;
-        Tmp[y_id + limInsert()].thickness = 0.15f * g_radius;
+        Tmp[y_id + limInsert()].thickness = 0.2f * g_radius;
     }
     if (cur_par_id != -1)
     {
         Tmp[x_id + limInsert()].ArcSecondPosition = Tmp[cur_par_id].NodePosition;
         Tmp[x_id + limInsert()].ArcColor = Highlight;
-        Tmp[x_id + limInsert()].thickness = 0.15f * g_radius;
+        Tmp[x_id + limInsert()].thickness = 0.2f * g_radius;
     }
     else
         Tmp[x_id + limInsert()].hideArc;
@@ -775,7 +775,7 @@ Node *AVL::rightRotate(Node *Cur, std::vector<Status> &Tmp)
     Tmp[x_id].NodeTextColor = BackgroundColor;
     Tmp[cur_id + limInsert()].ArcSecondPosition = Tmp[x_id].NodePosition;
     Tmp[cur_id + limInsert()].ArcColor = Highlight;
-    Tmp[cur_id + limInsert()].thickness = 0.15f * g_radius;
+    Tmp[cur_id + limInsert()].thickness = 0.2f * g_radius;
     Tmp[cur_id + limInsert()].hideArc = 0;
     if (y_id != -1)
     {
@@ -784,13 +784,13 @@ Node *AVL::rightRotate(Node *Cur, std::vector<Status> &Tmp)
         Tmp[y_id].NodeTextColor = BackgroundColor;
         Tmp[y_id + limInsert()].ArcSecondPosition = Tmp[cur_id].NodePosition;
         Tmp[y_id + limInsert()].ArcColor = Highlight;
-        Tmp[y_id + limInsert()].thickness = 0.15f * g_radius;
+        Tmp[y_id + limInsert()].thickness = 0.2f * g_radius;
     }
     if (cur_par_id != -1)
     {
         Tmp[x_id + limInsert()].ArcSecondPosition = Tmp[cur_par_id].NodePosition;
         Tmp[x_id + limInsert()].ArcColor = Highlight;
-        Tmp[x_id + limInsert()].thickness = 0.15f * g_radius;
+        Tmp[x_id + limInsert()].thickness = 0.2f * g_radius;
     }
     else
         Tmp[x_id + limInsert()].hideArc;

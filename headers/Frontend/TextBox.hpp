@@ -47,6 +47,7 @@ namespace Frontend
         void setLimit(unsigned int lim);
         void setNumber();
         void setFloatNumber();
+        void setOnlyText();
 
         // Draw
 
@@ -63,7 +64,7 @@ namespace Frontend
         sf::RenderTexture Texture;
         sf::Color color1, color2, fill;
         sf::String Pass;
-        bool isTyping, HasCaret, AllowTyping, HasLimit, password, OnlyNumber, FloatNumber, dot;
+        bool isTyping, HasCaret, AllowTyping, HasLimit, password, OnlyNumber, FloatNumber, dot, OnlyText;
         unsigned int EdgeOpacity;
         int FKey, Key, limit;
         const int Backspace = sf::Keyboard::Backspace,

@@ -44,10 +44,10 @@ signed main()
             }
             // Test.processEvent(event);
             Visual.processEvent(event);
-            if (Visual.mouseOnButton(mouse.getPosition(window)))
-                window.setMouseCursor(HandCursor);
-            else
-                window.setMouseCursor(DefaultCursor);
+            // if (Visual.mouseOnButton(mouse.getPosition(window)))
+            //     window.setMouseCursor(HandCursor);
+            // else
+            //     window.setMouseCursor(DefaultCursor);
         }
         window.clear(BackgroundColor);
         if (keepRunning || run1step)

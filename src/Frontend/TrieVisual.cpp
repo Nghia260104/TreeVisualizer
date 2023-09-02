@@ -1,15 +1,15 @@
-#include <AVLVisual.hpp>
+#include <TrieVisual.hpp>
 #include <FrontendGlobal.hpp>
 #include <stdlib.h>
 #include <thread>
 #include <iostream>
 using namespace Frontend;
 
-AVLVisual::AVLVisual()
+TrieVisual::TrieVisual()
 {
 }
 
-void AVLVisual::create()
+void TrieVisual::create()
 {
     // Base class
     Pattern::create();
@@ -30,8 +30,11 @@ void AVLVisual::create()
         f[i].setOpacity();
         f[i].setTyping();
         f[i].setFont(Consola);
-        f[i].setNumber();
-        f[i].setLimit((i == 0 ? 2 : 3));
+        if (i == 0)
+            f[i].setNumber();
+        else
+            f[i].setOnlyText();
+        f[i].setLimit((i == 0 ? 1 : 6));
         f[i].drawTexture();
 
         Start[i].create(150, window.getSize().y - 200 + 50 * i, 150, 50, Segoe, 16, S[i]);
@@ -47,49 +50,50 @@ void AVLVisual::create()
     Overload.setCharacterSize(20);
     Overload.setFont(Segoe);
     Overload.setFillColor(sf::Color::Red);
-    Overload.setString("Number of nodes can not be over 63!");
+    Overload.setString("Number of branches can not be over 32!");
     Overload.setPosition(5, window.getSize().y - 225);
 
     heightError.setCharacterSize(20);
     heightError.setFont(Segoe);
     heightError.setFillColor(sf::Color::Red);
-    heightError.setString("Tree's height can not be over 6!");
+    heightError.setString("Word's length can not be over 6!");
     heightError.setPosition(5, window.getSize().y - 225);
 
     RandomErr.setCharacterSize(20);
     RandomErr.setFont(Segoe);
     RandomErr.setFillColor(sf::Color::Red);
-    RandomErr.setString("Number of randomize can not be over 31!");
+    RandomErr.setString("Number of randomize can not be over 8!");
     RandomErr.setPosition(5, window.getSize().y - 225);
 
     // Prepare
-    Root = nullptr;
-    Table = new Frontend::CircleNode[limit];
-    Arc = new Frontend::Arrow[limit];
-    for (int i = 0; i < 63; i++)
+    Table = new Frontend::CircleNode[total];
+    Arc = new Frontend::Arrow[total];
+    for (int i = 0; i < total; i++)
     {
         Table[i].toPar = &Arc[i];
         Table[i].hide();
         Arc[i].hide();
     }
-    for (int i = 0; i < 63; i++)
-        Table[i].Child.resize(2, nullptr);
+    Table[0].show();
+    Table[0].setPosition(window.getSize().x / 2, upper_edge);
+    // for (int i = 0; i < 63; i++)
+    //     Table[i].Child.resize(2, nullptr);
 
-    Sys.link(Table, window.getSize().x / 2 - 800, Arc);
+    Sys.link(Table, Arc);
 
     fail = 0;
     drawTexture();
 }
 
-void AVLVisual::drawTexture()
+void TrieVisual::drawTexture()
 {
     Texture.clear(BackgroundColor);
     Texture.draw(Artwork);
     Texture.draw(ToolBar);
-    for (int i = 0; i < 63; i++)
+    for (int i = 0; i < total; i++)
         if (!Arc[i].isHidden())
             Texture.draw(Arc[i]);
-    for (int i = 0; i < 63; i++)
+    for (int i = 0; i < total; i++)
     {
         Table[i].drawTexture();
         if (!Table[i].isHidden())
@@ -120,7 +124,7 @@ void AVLVisual::drawTexture()
     Texture.display();
 }
 
-void AVLVisual::processEvent(const sf::Event &event)
+void TrieVisual::processEvent(const sf::Event &event)
 {
     changeSpd(event);
     Navigating(event);
@@ -135,10 +139,10 @@ void AVLVisual::processEvent(const sf::Event &event)
         {
             if (f[i].getText() == "")
                 return;
-            int val = std::stoi(std::string(f[i].getText()));
             if (i == 0)
             {
-                if (val > limit / 2)
+                int val = std::stoi(std::string(f[i].getText()));
+                if (val > 9)
                 {
                     fail = rand_size;
                     drawTexture();
@@ -147,62 +151,70 @@ void AVLVisual::processEvent(const sf::Event &event)
                 fail = 0;
                 windowHandle.clear();
                 clearGpx();
-                Root = nullptr;
                 Sys.clear();
-                std::vector<int> Tmp, Input;
+                std::vector<std::string> Tmp;
                 for (int j = 0; j < val; j++)
                 {
-                    int random = rand() % 1000;
-                    Tmp.push_back(random);
+                    int random = rand() % 6 + 1;
+                    std::string Generate = "";
+                    for (int a = 0; a < random; a++)
+                    {
+                        int r = rand() % 26;
+                        Generate += char(int(r + 'a'));
+                    }
+                    Tmp.push_back(Generate);
+                    std::cerr << Generate << " ";
                 }
-                std::sort(Tmp.begin(), Tmp.end());
-                PreparedArray(Tmp, 0, val - 1, Input);
-                std::cerr << "Random vector: ";
-                for (int j = 0; j < val; j++)
-                    std::cerr << Tmp[j] << " ";
-                std::cerr << "\nSorted vector: ";
-                for (int j = 0; j < val; j++)
-                    std::cerr << Input[j] << " ";
-                std::cerr << '\n';
+                // std::sort(Tmp.begin(), Tmp.end());
+                // std::cerr << "Random vector: ";
+                // for (int j = 0; j < val; j++)
+                //     std::cerr << Tmp[j] << " ";
+                // std::cerr << "\nSorted vector: ";
+                // for (int j = 0; j < val; j++)
+                //     std::cerr << Input[j] << " ";
+                // std::cerr << '\n';
                 for (int j = 0; j < val; j++)
                 {
-                    Sys.insertWithOrder(Input[j]);
                     // Sys.insert(Input[j]);
+                    Sys.insert(Tmp[j]);
                     windowHandle.clear();
                 }
-                for (int j = 0; j < val; j++)
-                    std::cerr << (!Table[j].isHidden() ? "Show " : "Hide ");
-                std::cerr << "\n";
-                for (int j = 0; j < val; j++)
-                {
-                    std::cerr << (!Arc[j].isHidden() ? "Show-" : "Hide-");
-                    std::cerr << (Arc[j].getThickness()) << " ";
-                }
+                // for (int j = 0; j < val; j++)
+                //     std::cerr << (!Table[j].isHidden() ? "Show " : "Hide ");
+                // std::cerr << "\n";
+                // for (int j = 0; j < val; j++)
+                // {
+                //     std::cerr << (!Arc[j].isHidden() ? "Show-" : "Hide-");
+                //     std::cerr << (Arc[j].getThickness()) << " ";
+                // }
                 drawTexture();
             }
             else if (i == 1)
             {
+                std::string val = f[i].getText();
                 windowHandle.clear();
-                Backend::BST::Limit t = Sys.insert(val);
-                if (t == Backend::BST::Limit::Overheight)
-                {
-                    fail = h_err;
-                    drawTexture();
-                }
-                else if (t == Backend::BST::Limit::Overload)
+                if (Sys.Inserted() >= limit)
                 {
                     fail = oversize;
                     drawTexture();
                 }
+                else if (val.size() > 6)
+                {
+                    fail = h_err;
+                    drawTexture();
+                }
                 else
                 {
+                    Sys.insert(val);
                     keepRunning = 1;
                     std::thread Run(&Handle::run, &windowHandle);
                     Run.detach();
+                    // Sys.displayPos();
                 }
             }
             else if (i == 2)
             {
+                std::string val = f[i].getText();
                 fail = 0;
                 windowHandle.clear();
                 Sys.remove(val);
@@ -212,6 +224,7 @@ void AVLVisual::processEvent(const sf::Event &event)
             }
             else if (i == 3)
             {
+                std::string val = f[i].getText();
                 fail = 0;
                 windowHandle.clear();
                 Sys.search(val);
@@ -224,7 +237,7 @@ void AVLVisual::processEvent(const sf::Event &event)
     }
 }
 
-void AVLVisual::clear()
+void TrieVisual::clear()
 {
     windowHandle.clear();
     clearGpx();
@@ -234,40 +247,33 @@ void AVLVisual::clear()
     interval = 1200;
 }
 
-void AVLVisual::clearGpx()
+void TrieVisual::clearGpx()
 {
-    for (int i = 0; i < 63; i++)
+    for (int i = 0; i < total; i++)
     {
         sf::String Tmp("");
         Table[i].setFillColor(BackgroundColor);
         Table[i].setTextColor(TextColor);
         Table[i].setOutline(TextColor);
         Table[i].setText(Tmp);
-        Table[i].setPosition(0, 0);
+        if (i != 0)
+            Table[i].setPosition(0, 0);
+        else
+            Table[i].setPosition(window.getSize().x / 2, 50);
         Table[i].drawTexture();
-        Table[i].hide();
+        if (i != 0)
+            Table[i].hide();
         Arc[i].setFillColor(TextColor);
         Arc[i].setFirstPosition(sf::Vector2f(0, 0));
         Arc[i].setSecondPosition(sf::Vector2f(0, 0));
-        Arc[i].setThickness(0.1f * g_radius);
+        Arc[i].setThickness(1);
         Arc[i].hide();
     }
 }
 
 // Private
 
-void AVLVisual::PreparedArray(std::vector<int> &Given, int l, int r, std::vector<int> &Res)
-{
-    if (l > r)
-        return;
-    int mid = (l + r) / 2;
-    Res.push_back(Given[mid]);
-    PreparedArray(Given, l, mid - 1, Res);
-    PreparedArray(Given, mid + 1, r, Res);
-    return;
-}
-
-void AVLVisual::Navigating(const sf::Event &event)
+void TrieVisual::Navigating(const sf::Event &event)
 {
     for (int i = 0; i < 3; i++)
     {
@@ -307,7 +313,7 @@ void AVLVisual::Navigating(const sf::Event &event)
     }
 }
 
-AVLVisual::~AVLVisual()
+TrieVisual::~TrieVisual()
 {
     delete[] Table;
     delete[] Arc;
@@ -315,9 +321,8 @@ AVLVisual::~AVLVisual()
     Arc = nullptr;
 }
 
-void AVLVisual::ReSetting()
+void TrieVisual::ReSetting()
 {
-    Pattern::ReSetting();
     ToolBar.setFillColor(ToolBarColor);
     for (int i = 0; i < 4; i++)
     {
@@ -333,7 +338,7 @@ void AVLVisual::ReSetting()
     Overload.setFillColor(TextColor);
     RandomErr.setFillColor(TextColor);
     if (Table)
-        for (int i = 0; i < limit; i++)
+        for (int i = 0; i < total; i++)
         {
             Table[i].setRadius(g_radius);
             Table[i].setFillColor(BackgroundColor);
@@ -341,7 +346,7 @@ void AVLVisual::ReSetting()
             Table[i].setOutline(TextColor);
         }
     if (Arc)
-        for (int i = 0; i < limit; i++)
+        for (int i = 0; i < total; i++)
         {
             Arc[i].setThickness(0.1f * g_radius);
             Arc[i].setFillColor(TextColor);

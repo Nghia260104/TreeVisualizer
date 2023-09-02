@@ -56,6 +56,9 @@ namespace Frontend
         void drawTexture();
         virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
+        // Misc
+        bool mouseOn(const sf::Vector2i &MousePos);
+
         // Destructor
         ~CircleNode(){};
     };

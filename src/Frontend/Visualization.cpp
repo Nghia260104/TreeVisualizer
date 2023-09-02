@@ -43,6 +43,7 @@ void Visualization::create()
                                  __max((ToolBarColor.b - 50) % 255, (ToolBarColor.b + 50) % 255), 50));
     Back.setOutline(SpecialTextColor);
     Back.setImage(UTILS_PATH + "back.png");
+    Back.setImageColor(SpecialTextColor);
     Back.drawTexture();
 
     // Title
@@ -79,9 +80,11 @@ void Visualization::create()
         DataType[i].drawTexture();
     }
 
-    // Hash Table Screen
+    // DataType Screen
     TableScreen.create();
     TreeScreen.create();
+    SettingScreen.create();
+    GraphScreen.create();
 
     // Initialize
     layer = 0;
@@ -94,8 +97,14 @@ void Visualization::create()
 void Visualization::drawTexture()
 {
     Texture.clear(BackgroundColor);
+    if (layer == option)
+    {
+        SettingScreen.drawTexture();
+        Texture.draw(SettingScreen);
+    }
     if (layer == Home)
     {
+        Texture.clear(BackgroundColor);
         Texture.draw(Name);
         for (int i = 0; i < 3; i++)
             Texture.draw(DataType[i]);
@@ -110,7 +119,12 @@ void Visualization::drawTexture()
         TreeScreen.drawTexture(layer);
         Texture.draw(TreeScreen);
     }
-    if (layer != Home)
+    if (layer == Graph)
+    {
+        GraphScreen.drawTexture();
+        Texture.draw(GraphScreen);
+    }
+    if (layer != Home && layer != option && layer != Info)
     {
         Texture.draw(Back);
     }
@@ -129,6 +143,11 @@ void Visualization::draw(sf::RenderTarget &target, sf::RenderStates states) cons
 
 void Visualization::processEvent(const sf::Event &event)
 {
+    if (layer == option)
+    {
+        Texture.draw(SettingScreen);
+        SettingScreen.processEvent(event);
+    }
     if (layer == Home)
     {
         for (int i = 0; i < 3; i++)
@@ -137,6 +156,12 @@ void Visualization::processEvent(const sf::Event &event)
             if (DataType[i].isPressed(event))
             {
                 layer = i + 1;
+                if (layer == Graph)
+                {
+                    GraphScreen.clear();
+                    windowHandle.setGraph();
+                }
+                else windowHandle.setNonGraph();
                 drawTexture();
                 return;
             }
@@ -152,10 +177,29 @@ void Visualization::processEvent(const sf::Event &event)
         TreeScreen.processEvent(event, layer);
         Texture.draw(TreeScreen);
     }
+    if (layer == Graph)
+    {
+        GraphScreen.processEvent(event);
+        Texture.draw(GraphScreen);
+    }
 
-    for (int i = 0; i < 2; i++)
-        Texture.draw(ToolBar[i]);
-    if (layer != Home)
+    if (layer != option && layer != Info)
+        for (int i = 0; i < 2; i++)
+        {
+            Texture.draw(ToolBar[i]);
+            if (ToolBar[i].isPressed(event))
+            {
+                if (i == 0)
+                {
+                    prev_layer = layer;
+                    layer = option;
+                    SettingScreen.Prepare();
+                    drawTexture();
+                    return;
+                }
+            }
+        }
+    if (layer != Home && layer != option && layer != Info)
     {
         Texture.draw(Back);
         if (Back.isPressed(event))
@@ -186,4 +230,47 @@ bool Visualization::mouseOnButton(const sf::Vector2i &MousePos)
     for (int i = 0; i < 3; i++)
         check |= DataType[i].mouseOn(MousePos);
     return check;
+}
+
+void Visualization::setLayer()
+{
+    layer = prev_layer;
+    drawTexture();
+}
+
+void Visualization::ReSetting()
+{
+    setLayer();
+    List.clear();
+    windowHandle.clear();
+    for (int i = 0; i < 2; i++)
+    {
+        ToolBar[i].setTextColor(SpecialTextColor);
+        ToolBar[i].setFillColor(ToolBarColor);
+        ToolBar[i].setCoverColor(sf::Color(__max((ToolBarColor.r - 50) % 255, (ToolBarColor.r + 50) % 255),
+                                           __max((ToolBarColor.g - 50) % 255, (ToolBarColor.g + 50) % 255),
+                                           __max((ToolBarColor.b - 50) % 255, (ToolBarColor.b + 50) % 255), 5));
+        ToolBar[i].drawTexture();
+    }
+    for (int i = 0; i < 3; i++)
+    {
+        DataType[i].setTextColor(SpecialTextColor);
+        DataType[i].setFillColor(ToolBarColor);
+        DataType[i].setCoverColor(sf::Color(__max((ToolBarColor.r - 50) % 255, (ToolBarColor.r + 50) % 255),
+                                            __max((ToolBarColor.g - 50) % 255, (ToolBarColor.g + 50) % 255),
+                                            __max((ToolBarColor.b - 50) % 255, (ToolBarColor.b + 50) % 255), 5));
+        DataType[i].drawTexture();
+    }
+    Name.setFillColor(TextColor);
+    Back.setFillColor(ToolBarColor);
+    Back.setImageColor(SpecialTextColor);
+    Back.setCoverColor(sf::Color(__max((ToolBarColor.r - 50) % 255, (ToolBarColor.r + 50) % 255),
+                                 __max((ToolBarColor.g - 50) % 255, (ToolBarColor.g + 50) % 255),
+                                 __max((ToolBarColor.b - 50) % 255, (ToolBarColor.b + 50) % 255), 5));
+    Back.drawTexture();
+    SettingScreen.ReSetting();
+    TableScreen.ReSetting();
+    TreeScreen.ReSetting();
+    Texture.clear(BackgroundColor);
+    drawTexture();
 }

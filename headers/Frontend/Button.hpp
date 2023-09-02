@@ -28,6 +28,7 @@ namespace Frontend
         void setSize(float w = 50, float h = 50);
         void setFillColor(sf::Color color = sf::Color::White, float ratio = 0);
         void setOutline(sf::Color color = sf::Color::Black, float thick = 1.0f);
+        const sf::Color &getFillColor();
 
         // Text
 

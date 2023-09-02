@@ -76,6 +76,11 @@ void Button::setFillColor(sf::Color color, float ratio)
     }
 }
 
+const sf::Color &Button::getFillColor()
+{
+    return Rec.getFillColor();
+}
+
 void Button::setOutline(sf::Color color, float thick)
 {
     Rec.setOutlineColor(color);

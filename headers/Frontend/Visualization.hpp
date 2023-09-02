@@ -2,6 +2,8 @@
 #include <SFML/Graphics.hpp>
 #include <TableVisual.hpp>
 #include <TreeVisual.hpp>
+#include <GraphVisual.hpp>
+#include <Settings.hpp>
 
 namespace Frontend
 {
@@ -11,6 +13,8 @@ namespace Frontend
         // Constructor
         Visualization();
         void create();
+        void setLayer();
+        void ReSetting();
 
         // Misc
         void processEvent(const sf::Event &event);
@@ -25,6 +29,8 @@ namespace Frontend
         sf::RenderTexture Texture;
         TableVisual TableScreen;
         TreeVisual TreeScreen;
+        GraphVisual GraphScreen;
+        Settings SettingScreen;
         Button ToolBar[2];
         sf::Text Name;
         Button DataType[3];
@@ -33,7 +39,7 @@ namespace Frontend
                   Table = 1, Linear = 4, Quad = 5, DoubleHashing = 6, Chain = 7,
                   Tree = 2, avl = 8, B4 = 9, MaxHeap = 10, MinHeap = 11, Trie = 12,
                   Graph = 3, Connect = 13, MinSpan = 14, Dijkstra = 15,
-                  Settings = 16, Info = 17;
-        int layer;
+                  option = 16, Info = 17;
+        int layer, prev_layer;
     };
 }

@@ -27,6 +27,7 @@ class Handle
     std::vector<std::vector<Status>> list;
     int step;
     sf::Clock clock;
+    bool graph;
 
 public:
     Handle();
@@ -34,6 +35,8 @@ public:
     std::vector<Status> &back();
     std::vector<Status> &operator[](int id);
     int size();
+    void setGraph();
+    void setNonGraph();
     void clear();
     void stepforw();
     void stepback();

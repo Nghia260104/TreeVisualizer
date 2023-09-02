@@ -23,6 +23,7 @@ namespace Frontend
         // Misc
         void processEvent(const sf::Event &event, int &layer);
         bool mouseOnButton(const sf::Vector2i &MousePos);
+        void ReSetting();
         // bool mouseOnTextBox(const sf::Vector2i &MousePos);
 
         // Draw

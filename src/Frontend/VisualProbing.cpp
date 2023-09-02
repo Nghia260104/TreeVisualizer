@@ -92,6 +92,8 @@ void VisualProbing::drawTexture()
         Navigate[i].drawTexture();
         Texture.draw(Navigate[i]);
     }
+    Spd.drawTexture();
+    Texture.draw(Spd);
     if (fail)
     {
         Texture.draw(Overload);
@@ -102,10 +104,8 @@ void VisualProbing::drawTexture()
 
 void VisualProbing::processEvent(const sf::Event &event)
 {
-    // std::thread Nav(Navigating, this, std::ref(event));
+    changeSpd(event);
     Navigating(event);
-    // if (keepRunning)
-        // drawTexture();
     for (int i = 0; i < 5; i++)
     {
         if (!keepRunning)
@@ -232,6 +232,7 @@ void VisualProbing::clear()
         Sys->clear();
     for (int i = 0; i < 5; i++)
         f[i].erase();
+    interval = 1200;
 }
 
 LinearProbing::LinearProbing()
@@ -262,4 +263,28 @@ QuadraticProbing::~QuadraticProbing()
 DoubleHashing::~DoubleHashing()
 {
     std::cerr << "Call destructor for DoubleHashingVisual" << '\n';
+}
+
+void VisualProbing::ReSetting()
+{
+    Pattern::ReSetting();
+    ToolBar.setFillColor(ToolBarColor);
+    Overload.setFillColor(TextColor);
+    for (int i = 0; i < 5; i++)
+    {
+        f[i].setFillColor(BackgroundColor);
+        f[i].setTextColor(TextColor);
+        Start[i].setFillColor(ToolBarColor);
+        Start[i].setTextColor(SpecialTextColor);
+        Start[i].setCoverColor(sf::Color(__max((ToolBarColor.r - 50) % 255, (ToolBarColor.r + 50) % 255),
+                                         __max((ToolBarColor.g - 50) % 255, (ToolBarColor.g + 50) % 255),
+                                         __max((ToolBarColor.b - 50) % 255, (ToolBarColor.b + 50) % 255), 50));
+    }
+    for (int i = 0; i < Table.size(); i++)
+    {
+        Table[i].setRadius(g_radius);
+        Table[i].setFillColor(BackgroundColor);
+        Table[i].setTextColor(TextColor);
+        Table[i].setOutline(TextColor);
+    }
 }

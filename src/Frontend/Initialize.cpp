@@ -19,15 +19,17 @@ void Frontend::Initialize()
 
     // Color
     BackgroundColor = sf::Color(246, 241, 241, 255);
-    TextColor = sf::Color::Black;
-    ToolBarColor = sf::Color::Cyan;
+    Blur = TextColor = sf::Color::Black;
+    Blur.a = 50;
+    ToolBarColor = sf::Color(22, 120, 224, 255);
     SpecialTextColor = sf::Color::Black;
-    Highlight = sf::Color(255, 127, 0, 255);
+    Highlight = sf::Color(199, 75, 8, 255);
 
     // Fonts
     loadFont();
 
     // Size
+    g_size = 9;
     g_radius = 26;
     fontsize = 18;
     textsize = 16;

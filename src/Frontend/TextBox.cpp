@@ -22,6 +22,7 @@ TextBox::TextBox()
     isTyping = 0;
     OnlyNumber = 0;
     FloatNumber = 0;
+    OnlyText = 0;
     dot = 0;
     // Texture.create(1000.0f, 500.0f);
     FKey = 0;
@@ -47,6 +48,7 @@ TextBox::TextBox(float a, float b, float w, float h, unsigned int fontsize, sf::
     HasLimit = 0;
     OnlyNumber = 0;
     FloatNumber = 0;
+    OnlyText = 0;
     dot = 0;
     isTyping = 0;
     Texture.create(w, h);
@@ -74,6 +76,7 @@ void TextBox::create(float a, float b, float w, float h, unsigned int fontsize, 
     HasLimit = 0;
     OnlyNumber = 0;
     FloatNumber = 0;
+    OnlyText = 0;
     dot = 0;
     isTyping = 0;
     Texture.create(w, h);
@@ -379,6 +382,11 @@ void TextBox::setFloatNumber()
     FloatNumber = 1;
 }
 
+void TextBox::setOnlyText()
+{
+    OnlyText = 1;
+}
+
 // Draw //////////////////////////////////////////////////////////////////////////////////////////////////
 
 void TextBox::draw(sf::RenderTarget &target, sf::RenderStates state) const
@@ -541,6 +549,26 @@ void TextBox::updateText()
                 }
                 if (Key == '.')
                     dot = 1;
+            }
+            return;
+        }
+        if (OnlyText && Type == TextEntered)
+        {
+            if ('a' <= Key && Key <= 'z')
+            {
+                if (Text.getString().getSize() < limit)
+                {
+                    sf::String S = Text.getString();
+                    if (!password)
+                        S.insert(id, (sf::String) static_cast<char>(Key));
+                    else
+                    {
+                        S.insert(id, '*');
+                        Pass.insert(id, (sf::String) static_cast<char>(Key));
+                    }
+                    Text.setString(S);
+                    id++;
+                }
             }
             return;
         }
