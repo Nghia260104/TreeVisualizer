@@ -271,6 +271,7 @@ void Visualization::ReSetting()
     SettingScreen.ReSetting();
     TableScreen.ReSetting();
     TreeScreen.ReSetting();
+    GraphScreen.ReSetting();
     Texture.clear(BackgroundColor);
     drawTexture();
 }

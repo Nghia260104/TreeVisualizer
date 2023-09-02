@@ -80,11 +80,11 @@ void GraphVisual::create()
     Exist.setString("Existed!");
     Exist.setPosition(5, window.getSize().y - 375);
 
-    Exist.setCharacterSize(20);
-    Exist.setFont(Segoe);
-    Exist.setFillColor(sf::Color::Red);
-    Exist.setString("Node does not exist!");
-    Exist.setPosition(5, window.getSize().y - 375);
+    NonExist.setCharacterSize(20);
+    NonExist.setFont(Segoe);
+    NonExist.setFillColor(sf::Color::Red);
+    NonExist.setString("Node does not exist!");
+    NonExist.setPosition(5, window.getSize().y - 375);
 
     RandomErr.setCharacterSize(20);
     RandomErr.setFont(Segoe);
@@ -448,6 +448,43 @@ void GraphVisual::resetColor()
         Arc[i].setFillColor(TextColor);
         Arc[i].setThickness(0.1f * g_radius);
     }
+}
+
+void GraphVisual::ReSetting()
+{
+    Pattern::ReSetting();
+    ToolBar.setFillColor(ToolBarColor);
+    for (int i = 0; i < 9; i++)
+    {
+        f[i].setFillColor(BackgroundColor);
+        f[i].setTextColor(TextColor);
+    }
+    for (int i = 0; i < 7; i++)
+    {
+        Start[i].setFillColor(ToolBarColor);
+        Start[i].setTextColor(SpecialTextColor);
+        Start[i].setCoverColor(sf::Color(__max((ToolBarColor.r - 50) % 255, (ToolBarColor.r + 50) % 255),
+                                         __max((ToolBarColor.g - 50) % 255, (ToolBarColor.g + 50) % 255),
+                                         __max((ToolBarColor.b - 50) % 255, (ToolBarColor.b + 50) % 255), 50));
+    }
+    Overload.setFillColor(TextColor);
+    RandomErr.setFillColor(TextColor);
+    Exist.setFillColor(TextColor);
+    NonExist.setFillColor(TextColor);
+    if (Table)
+        for (int i = 0; i < 20; i++)
+        {
+            Table[i].setRadius(g_radius);
+            Table[i].setFillColor(BackgroundColor);
+            Table[i].setTextColor(TextColor);
+            Table[i].setOutline(TextColor);
+        }
+    if (Arc)
+        for (int i = 0; i < 190; i++)
+        {
+            Arc[i].setThickness(0.1f * g_radius);
+            Arc[i].setFillColor(TextColor);
+        }
 }
 
 GraphVisual::~GraphVisual()
