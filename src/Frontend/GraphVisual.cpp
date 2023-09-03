@@ -208,6 +208,7 @@ void GraphVisual::processEvent(const sf::Event &event)
                     return;
                 }
                 fail = 0;
+                windowHandle.clear();
                 clearGpx();
                 Sys.clear();
                 std::cerr << "Add vertices\n";

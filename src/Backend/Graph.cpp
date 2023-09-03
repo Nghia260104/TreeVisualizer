@@ -414,6 +414,8 @@ bool Graph::Dijkstra(int s)
         {
             int v = j.v;
             int w = j.val->weight;
+            if (visited[v])
+                continue;
 
             for (int i = 0; i < 20; i++)
                 if (Tmp[i].NodeFillColor == Highlight)
