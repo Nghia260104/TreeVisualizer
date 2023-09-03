@@ -123,7 +123,8 @@ bool Probing::REMOVE(int val, std::vector<Frontend::CircleNode> &Art, Type t)
             }
             else
             {
-                Tmp->f = 0;
+                Tmp->val = -1;
+                Tmp->f = 1;
                 Tmp->grave = 1;
                 numInserted--;
                 a.val = "DEL";

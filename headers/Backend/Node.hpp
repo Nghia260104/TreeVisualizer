@@ -31,7 +31,7 @@ namespace Backend
         float x, y;
         std::vector<HashNode *> Child;
 
-        HashNode(int a = 0, int numChild = 1);
+        HashNode(int a = -1, int numChild = 1);
     };
 
     struct StrNode
