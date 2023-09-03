@@ -213,6 +213,7 @@ StrNode *Trie::REMOVE(StrNode *Cur, const std::string &val, int depth)
         {
             Cur->isEndOfWord = false;
             Tmp[Cur->vs_id].nodeVal = "";
+            windowHandle.push_back(Tmp);
         }
 
         if (Cur->numChild() == 0)
@@ -225,25 +226,30 @@ StrNode *Trie::REMOVE(StrNode *Cur, const std::string &val, int depth)
             delete Cur;
             numNode--;
             Cur = nullptr;
+            windowHandle.push_back(Tmp);
         }
-        windowHandle.push_back(Tmp);
         return Cur;
     }
 
     int id = val[depth] - 'a';
     Cur->Child[id] = REMOVE(Cur->Child[id], val, depth + 1);
 
-    if (Cur->numChild() == 0)
+    if (!Cur->Child[id] && Cur->numChild() > 0)
+    {
+        setPosition(windowHandle.back());
+    }
+    Tmp = windowHandle.back();
+    if (Cur->numChild() == 0 && Cur != Root)
     {
         Tmp[Cur->vs_id].hideNode = 1;
         Tmp[Cur->vs_id + total].hideArc = 1;
-        windowHandle.push_back(Tmp);
-        Cur->Par->Child[int(val.back() - 'a')] = nullptr;
-        if (Cur->Par->numChild() > 0)
-            setPosition(Tmp);
+        // Cur->Par->Child[int(val.back() - 'a')] = nullptr;
+        // if (Cur->Par->numChild() > 0)
+        //     setPosition(Tmp);
         delete Cur;
         numNode--;
         Cur = nullptr;
+        windowHandle.push_back(Tmp);
     }
     return Cur;
 }
