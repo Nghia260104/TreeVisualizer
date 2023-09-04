@@ -285,8 +285,10 @@ void Settings::processEvent(const sf::Event &event)
                 B.setText(std::to_string(Sample[cur].getFillColor().b));
             }
             drawTexture();
+            return;
         }
     }
+    bool check = 0;
     for (int i = 0; i < 5; i++)
     {
         Texture.draw(Sample[i]);
@@ -297,7 +299,9 @@ void Settings::processEvent(const sf::Event &event)
             G.setText(std::to_string(Sample[i].getFillColor().g));
             B.setText(std::to_string(Sample[i].getFillColor().b));
             drawTexture();
+            return;
         }
+        else check |= 1;
     }
     for (int i = 0; i < 16; i++)
     {
@@ -309,6 +313,7 @@ void Settings::processEvent(const sf::Event &event)
             G.setText(std::to_string(Sample[cur].getFillColor().g));
             B.setText(std::to_string(Sample[cur].getFillColor().b));
             drawTexture();
+            return;
         }
     }
     if (R.checkEvent(event))
@@ -319,8 +324,9 @@ void Settings::processEvent(const sf::Event &event)
             if (R.getText() == "")
                 Tmp.r = 0;
             else
-                Tmp.r = (std::stoi(std::string(R.getText()))) % 255;
+                Tmp.r = (std::stoi(std::string(R.getText()))) % 256;
             Sample[cur].setFillColor(Tmp);
+            drawTexture();
         }
         Texture.draw(R);
     }
@@ -332,8 +338,9 @@ void Settings::processEvent(const sf::Event &event)
             if (G.getText() == "")
                 Tmp.g = 0;
             else
-                Tmp.g = (std::stoi(std::string(G.getText()))) % 255;
+                Tmp.g = (std::stoi(std::string(G.getText()))) % 256;
             Sample[cur].setFillColor(Tmp);
+            drawTexture();
         }
         Texture.draw(G);
     }
@@ -345,8 +352,9 @@ void Settings::processEvent(const sf::Event &event)
             if (B.getText() == "")
                 Tmp.b = 0;
             else
-                Tmp.b = (std::stoi(std::string(B.getText()))) % 255;
+                Tmp.b = (std::stoi(std::string(B.getText()))) % 256;
             Sample[cur].setFillColor(Tmp);
+            drawTexture();
         }
         Texture.draw(B);
     }

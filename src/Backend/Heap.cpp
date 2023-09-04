@@ -477,3 +477,9 @@ int Heap::getSize()
 {
     return size;
 }
+
+void Heap::clear()
+{
+    Tree::clear();
+    size = 0;
+}

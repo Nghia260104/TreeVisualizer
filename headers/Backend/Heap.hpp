@@ -33,6 +33,7 @@ namespace Backend
         int extract(Type t);
         bool REMOVE(int id, Type t);
         int getSize();
+        void clear();
 
     private:
         Frontend::CircleNode *Table;
