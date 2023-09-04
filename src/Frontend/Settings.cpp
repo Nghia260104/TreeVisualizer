@@ -316,7 +316,10 @@ void Settings::processEvent(const sf::Event &event)
         if (cur != -1)
         {
             sf::Color Tmp = Sample[cur].getFillColor();
-            Tmp.r = (std::stoi(std::string(R.getText()))) % 255;
+            if (R.getText() == "")
+                Tmp.r = 0;
+            else
+                Tmp.r = (std::stoi(std::string(R.getText()))) % 255;
             Sample[cur].setFillColor(Tmp);
         }
         Texture.draw(R);
@@ -326,7 +329,10 @@ void Settings::processEvent(const sf::Event &event)
         if (cur != -1)
         {
             sf::Color Tmp = Sample[cur].getFillColor();
-            Tmp.g = (std::stoi(std::string(G.getText()))) % 255;
+            if (G.getText() == "")
+                Tmp.g = 0;
+            else
+                Tmp.g = (std::stoi(std::string(G.getText()))) % 255;
             Sample[cur].setFillColor(Tmp);
         }
         Texture.draw(G);
@@ -336,7 +342,10 @@ void Settings::processEvent(const sf::Event &event)
         if (cur != -1)
         {
             sf::Color Tmp = Sample[cur].getFillColor();
-            Tmp.b = (std::stoi(std::string(B.getText()))) % 255;
+            if (B.getText() == "")
+                Tmp.b = 0;
+            else
+                Tmp.b = (std::stoi(std::string(B.getText()))) % 255;
             Sample[cur].setFillColor(Tmp);
         }
         Texture.draw(B);
@@ -370,6 +379,7 @@ void Settings::ReSetting()
         Title[i].setFillColor(SpecialTextColor);
     SizeVal.setFillColor(BackgroundColor);
     SizeVal.setTextColor(SpecialTextColor);
+    SizeVal.setOutlineColor(SpecialTextColor, SpecialTextColor);
     for (int i = 0; i < 2; i++)
         Theme[i].setFillColor(SpecialTextColor);
     sf::Color Tmp[] = {BackgroundColor, TextColor, ToolBarColor, SpecialTextColor, Highlight};
@@ -377,15 +387,21 @@ void Settings::ReSetting()
     {
         Color[i].setFillColor(SpecialTextColor);
         Sample[i].setFillColor(Tmp[i]);
+        Sample[i].setOutline(SpecialTextColor);
     }
+    for (int i = 0; i < 16; i++)
+        Common[i].setOutline(SpecialTextColor);
     for (int i = 0; i < 3; i++)
         index[i].setFillColor(SpecialTextColor);
     R.setFillColor(BackgroundColor);
     R.setTextColor(SpecialTextColor);
+    R.setOutlineColor(SpecialTextColor);
     G.setFillColor(BackgroundColor);
     G.setTextColor(SpecialTextColor);
+    G.setOutlineColor(SpecialTextColor);
     B.setFillColor(BackgroundColor);
     B.setTextColor(SpecialTextColor);
+    B.setOutlineColor(SpecialTextColor);
     Cancel.setFillColor(ToolBarColor);
     Cancel.setTextColor(SpecialTextColor);
     Cancel.setCoverColor(sf::Color(__max((ToolBarColor.r - 50) % 255, (ToolBarColor.r + 50) % 255),

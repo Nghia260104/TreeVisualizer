@@ -436,6 +436,7 @@ Node *AVL::REMOVE(Node *Cur, int val, bool &check)
                 Node *Swap = Cur;
                 Cur = temp_node;
                 temp_node = Swap;
+                Cur->Par = Par;
                 if (Par)
                 {
                     if (Par->Child[Left] == temp_node)
@@ -466,6 +467,7 @@ Node *AVL::REMOVE(Node *Cur, int val, bool &check)
                 setArcPosition(root(), Tmp);
             }
             windowHandle.push_back(Tmp);
+            return Cur;
         }
         else
         {
